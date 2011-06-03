@@ -121,8 +121,8 @@ exports.Lexer = class Lexer
         when '&&', '||'                           then 'LOGIC'
         when 'true', 'false', 'null', 'undefined' then 'BOOL'
         when 'break', 'continue', 'debugger'      then 'STATEMENT'
+        when 'inc'                                then 'INC'
         else  tag
-
     @token tag, id
     @token ':', ':' if colon
     input.length
@@ -515,7 +515,7 @@ JS_KEYWORDS = [
 ]
 
 # CoffeeScript-only keywords.
-COFFEE_KEYWORDS = ['undefined', 'then', 'unless', 'until', 'loop', 'of', 'by', 'when']
+COFFEE_KEYWORDS = ['undefined', 'then', 'unless', 'until', 'loop', 'of', 'by', 'when', 'inc']
 
 COFFEE_ALIAS_MAP =
   and  : '&&'
@@ -567,6 +567,7 @@ OPERATOR   = /// ^ (
    | ([&|<>])\2=?      # logic / shift
    | \?\.              # soak access
    | \.{2,3}           # range or splat
+   | inc
 ) ///
 
 WHITESPACE = /^[^\n\S]+/
@@ -616,7 +617,7 @@ TRAILING_SPACES = /\s+$/
 NO_NEWLINE      = /// ^ (?:            # non-capturing group
   [-+*&|/%=<>!.\\][<>=&|]* |           # symbol operators
   and | or | is(?:nt)? | n(?:ot|ew) |  # word operators
-  delete | typeof | instanceof
+  delete | typeof | instanceof | inc
 ) $ ///
 
 # Compound assignment tokens.
